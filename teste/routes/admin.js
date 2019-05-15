@@ -1,10 +1,31 @@
 var express = require('express');
 var users = require('./../inc/users');
+var criancas = require('./../inc/criancas');
+var admin = require('./../inc/admin');
 var router = express.Router();
 
 router.get("/login", function(req, res, next){
 
     users.render(req, res, null);
+
+});
+
+router.get("/criancas", function(req, res, next){
+  
+  criancas.getCriancas().then(data =>{
+
+    res.render("admin/criancas",admin.getParams(req, {
+      data
+    }));
+
+  });
+
+
+});
+
+router.get("/index", function(req, res, next){
+
+  res.render("admin/index");
 
 });
 
@@ -20,7 +41,7 @@ router.post("/login", function(req, res, next){
 
         req.session.user = user;
 
-        res.redirect("/admin");
+        res.redirect("/admin/criancas");
 
     }).catch(err => {
 
